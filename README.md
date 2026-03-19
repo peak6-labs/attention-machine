@@ -15,7 +15,18 @@ Each product ("customer") gets its own folder under `customers/` with everything
 
 | Customer | Goal | Folder |
 |----------|------|--------|
-| Peak6 Trials | 1,500 applications in 70 days | [customers/peak6trials/](customers/peak6trials/) |
+| Peak6 Trials | 1,500 applications by May 29 | [customers/peak6trials/](customers/peak6trials/) |
+
+### Peak6 Trials — Progress
+
+| Metric | Value |
+|--------|-------|
+| Goal | 1,500 applications |
+| Deadline | May 29, 2026 |
+| Current applications | 40 |
+| Remaining | 1,460 |
+| Days left (as of Mar 19) | 71 |
+| **Needed per day** | **~20.6/day** |
 
 ## Adding a New Customer
 
