@@ -1,0 +1,9 @@
+# Agent-generated data (large, ephemeral)
+data/x-intelligence/*.json
+data/analytics/*.md
+data/memory/*.md
+data/content-calendar/*.json
+
+# Keep the directory structure
+!data/.gitkeep
+!data/**/.gitkeep
