@@ -101,17 +101,21 @@ sudo docker exec paperclip-db-1 pg_dump -U paperclip paperclip > /tmp/paperclip-
 ```bash
 # 2a. Create the Postgres instance
 gcloud sql instances create paperclip-db \
-  --database-version=POSTGRES_15 \
+  --database-version=POSTGRES_17 \
   --tier=db-f1-micro \
   --region=us-central1 \
   --storage-size=10GB \
   --storage-auto-increase
 
-# 2b. Set the postgres user password
+# 2b. Generate and persist the postgres user password
+DB_PASSWORD="$(openssl rand -base64 24)"
+echo -n "$DB_PASSWORD" | gcloud secrets create paperclip-db-password \
+  --data-file=- --replication-policy=automatic
 gcloud sql users set-password postgres \
   --instance=paperclip-db \
-  --password="$(openssl rand -base64 24)"
-# SAVE THIS PASSWORD — you'll need it for Cloud Run env vars
+  --password="$DB_PASSWORD"
+# Password is stored in Secret Manager as paperclip-db-password.
+# Retrieve later: gcloud secrets versions access latest --secret=paperclip-db-password
 
 # 2c. Create the database
 gcloud sql databases create paperclip --instance=paperclip-db
@@ -195,18 +199,17 @@ docker push us-central1-docker.pkg.dev/p6s-paperclip-prod/paperclip/server:lates
 echo -n "YOUR_64_CHAR_HEX_KEY" | gcloud secrets create paperclip-secrets-master-key \
   --data-file=- --replication-policy=automatic
 
-# 5b. Agent JWT secret (if used)
-echo -n "YOUR_JWT_SECRET" | gcloud secrets create paperclip-agent-jwt-secret \
+# 5b. Better Auth secret (Paperclip uses Better Auth, not raw JWT)
+echo -n "YOUR_BETTER_AUTH_SECRET" | gcloud secrets create paperclip-better-auth-secret \
   --data-file=- --replication-policy=automatic
 
 # 5c. Grant Cloud Run service account access
 PROJECT_NUMBER=$(gcloud projects describe p6s-paperclip-prod --format='value(projectNumber)')
-gcloud secrets add-iam-policy-binding paperclip-secrets-master-key \
-  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
-  --role="roles/secretmanager.secretAccessor"
-gcloud secrets add-iam-policy-binding paperclip-agent-jwt-secret \
-  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
-  --role="roles/secretmanager.secretAccessor"
+for SECRET in paperclip-secrets-master-key paperclip-better-auth-secret paperclip-db-password; do
+  gcloud secrets add-iam-policy-binding "$SECRET" \
+    --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+    --role="roles/secretmanager.secretAccessor"
+done
 ```
 
 ---
@@ -222,16 +225,16 @@ gcloud run deploy paperclip \
   --image=us-central1-docker.pkg.dev/p6s-paperclip-prod/paperclip/server:latest \
   --region=us-central1 \
   --port=3100 \
-  --memory=1Gi \
-  --cpu=1 \
+  --memory=2Gi \
+  --cpu=2 \
   --min-instances=1 \
   --max-instances=1 \
   --allow-unauthenticated \
   --add-cloudsql-instances="${CONNECTION_NAME}" \
   --set-env-vars="NODE_ENV=production" \
-  --set-env-vars="DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/paperclip?host=/cloudsql/${CONNECTION_NAME}" \
+  --set-env-vars="DATABASE_URL=postgresql://postgres:PASSWORD@CLOUD_SQL_IP:5432/paperclip" \
   --set-secrets="PAPERCLIP_SECRETS_MASTER_KEY=paperclip-secrets-master-key:latest" \
-  --set-secrets="PAPERCLIP_AGENT_JWT_SECRET=paperclip-agent-jwt-secret:latest"
+  --set-secrets="BETTER_AUTH_SECRET=paperclip-better-auth-secret:latest"
 ```
 
 ### Key flags explained:
@@ -242,13 +245,14 @@ gcloud run deploy paperclip \
 | `--min-instances=1` | Keep always-on (cron jobs, agent heartbeats need it) |
 | `--max-instances=1` | Single instance — Paperclip isn't designed for horizontal scaling |
 | `--allow-unauthenticated` | Public web UI + API (Paperclip has its own auth) |
+| `--memory=2Gi --cpu=2` | Plugin worker init needs 2 vCPU / 2Gi to complete within the 15s RPC timeout |
 | `--add-cloudsql-instances` | Enables Cloud SQL Auth Proxy sidecar |
 | `--set-secrets` | Mounts secrets from Secret Manager as env vars |
 
 ### Note on `--min-instances=1`
 
-Cloud Run bills per vCPU-second when instances are active. With `min-instances=1` on 1 CPU:
-- ~$50-65/month (always-on)
+Cloud Run bills per vCPU-second when instances are active. With `min-instances=1` on 2 CPUs:
+- ~$100-130/month (always-on)
 - This is comparable to the `e2-small` VM cost
 
 If cost is a concern, you can set `--min-instances=0` but then:
@@ -389,14 +393,14 @@ These may affect the plan — investigate during execution:
 
 | Component | VM (current) | Cloud Run |
 |-----------|-------------|-----------|
-| Compute | e2-small ~$15/mo | 1 vCPU always-on ~$55/mo |
+| Compute | e2-small ~$15/mo | 2 vCPU always-on ~$110/mo |
 | Database | In docker-compose (free) | Cloud SQL db-f1-micro ~$10/mo |
 | TLS | Let's Encrypt (free) | Included |
 | Static IP | ~$3/mo | N/A |
 | Domain | paperbox.xyz ~$10/yr | Included (*.run.app) |
-| **Total** | **~$19/mo** | **~$65/mo** |
+| **Total** | **~$19/mo** | **~$120/mo** |
 
-Cloud Run is ~3x the cost, but eliminates: VM maintenance, SSH deploys, Caddy config, domain registration, and the Netskope block.
+Cloud Run is ~6x the cost, but eliminates: VM maintenance, SSH deploys, Caddy config, domain registration, and the Netskope block.
 
 **Cost optimization**: If cold starts are acceptable, `--min-instances=0` drops compute to near-zero when idle (pay only for active request time). But this may break scheduled plugin jobs.
 
