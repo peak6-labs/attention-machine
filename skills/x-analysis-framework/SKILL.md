@@ -38,11 +38,15 @@ skill for full API documentation and curl examples.
 
 | Tool | When to use |
 |------|------------|
-| `get-today` | Start of every analysis cycle. Fetch the full scored corpus. |
-| `search-corpus` | Targeted investigation. "Is anyone talking about X?" |
+| `get-today` | Start of every analysis cycle. Fetch the full scored corpus. Use `min_score: 0.3` to filter noise. |
+| `search-corpus` | Targeted investigation. Filter by pillar, engagement level, time window (`since: "8h"`), or score threshold. |
+| `analyze-topic` | On-demand deep dive when you spot a trending topic. Returns 5-perspective synthesis (core, expert voices, pain points, positive signals, link-based) plus corpus cross-reference. |
+| `get-thread` | Fetch conversation context when a tweet looks like part of a valuable thread. |
 | `get-authorities` | Check if a handle is a known authority before weighing their content. |
 | `suggest-handles` | Find emerging voices that might signal a growing conversation. |
 | `track-handle` | Record a new high-quality handle found during analysis. |
+| `promote-handle` | Promote a validated handle to an authority list. Include a note explaining why. |
+| `rate-tweet` | Rate corpus tweets as relevant/irrelevant/skip to improve future discovery quality. |
 
 ### Weekend/holiday awareness
 
@@ -54,7 +58,24 @@ If `get-today` returns a thin corpus (<10 items):
 3. Don't force opportunities from a thin corpus — "nothing actionable today"
    is a valid output.
 
-## 3. Opportunity identification
+## 3. Engagement threshold tiers
+
+Use these thresholds (configurable in plugin settings under `engagement_thresholds`)
+to filter signal from noise:
+
+| Tier | Threshold | Action |
+|------|-----------|--------|
+| **Noise floor** | < 10 total engagements | Skip unless from an authority handle |
+| **Signal** | 10-49 engagements | Worth reading, may be opportunity if topic-relevant |
+| **Expert** | 50-99 engagements | Likely a quality conversation. Investigate. |
+| **Escalation** | 100+ engagements | High-priority. Always investigate and create an issue if relevant. |
+
+Total engagement = likes + reposts + replies + quotes.
+
+When using `search-corpus`, apply these as `min_engagement` filters to focus
+your attention.
+
+## 4. Opportunity identification
 
 ### What makes a content opportunity?
 
@@ -96,7 +117,7 @@ When multiple corpus items point to the same topic, that is a signal:
    (issue priority: `high`). Slow-building trends are standard
    (priority: `medium`).
 
-## 4. Scoring opportunities
+## 5. Scoring opportunities
 
 Rate each identified opportunity on three dimensions:
 
@@ -118,7 +139,7 @@ Rate each identified opportunity on three dimensions:
 These are judgment calls, not formulas. Use the scores as a framework, not
 a calculator.
 
-## 5. Issue creation
+## 6. Issue creation
 
 When you identify a content opportunity, create a Paperclip issue for a
 content agent to pick up.
@@ -186,7 +207,7 @@ or CEO agent handles assignment based on voice profile and workload.
 If the opportunity clearly calls for hub voice, add the label `voice:hub`.
 If builder voice, add `voice:builder`. This helps the operator route it.
 
-## 6. Analysis cycle workflow
+## 7. Analysis cycle workflow
 
 When triggered by a `corpus.updated` event or a scheduled heartbeat:
 
@@ -228,7 +249,7 @@ When triggered by a `corpus.updated` event or a scheduled heartbeat:
 - @{handle} (relevance: {X}, domain: {domain})
 ```
 
-## 7. Ad-hoc analysis
+## 8. Ad-hoc analysis
 
 When asked to analyze a specific topic (not a scheduled cycle):
 
@@ -238,7 +259,42 @@ When asked to analyze a specific topic (not a scheduled cycle):
 4. Report findings directly — create an issue only if the analysis reveals
    an actionable opportunity.
 
-## 8. What you don't do
+## 9. Watchlist management
+
+You are responsible for maintaining the authority handle ecosystem.
+
+### Promoting handles
+
+When you notice a handle consistently appearing in high-quality corpus results:
+
+1. Call `suggest-handles` to check if they're already a candidate.
+2. If they have 5+ appearances and 0.7+ avg relevance, promote them:
+   call `promote-handle` with the handle, the best-matching domain
+   (`market_structure`, `fintech`, `venture_capital`, `chicago_trading`), and
+   a note explaining why.
+3. If they don't yet meet the threshold, call `track-handle` to record the
+   appearance. The pipeline will auto-promote when thresholds are met.
+
+### Rating tweets
+
+As you scan the corpus, rate tweets to improve future discovery:
+
+- **relevant**: Directly useful for PEAK6's AI x Fintech positioning
+- **irrelevant**: Noise that shouldn't have been in the corpus
+- **skip**: Not clearly relevant or irrelevant
+
+Aim to rate at least 10 tweets per cycle. This feedback loop tunes the
+pipeline over time.
+
+## 10. Cadence
+
+| Trigger | Action |
+|---------|--------|
+| `corpus.updated` event | Full analysis cycle (steps 1-8 in section 7) |
+| Heartbeat (3x/day) | Quick scan using `search-corpus` with `since: "8h"`. Focus on missed opportunities. |
+| `tweet.high-engagement` event | Immediate investigation. Call `analyze-topic` + `get-thread`. Create issue if relevant. |
+
+## 11. What you don't do
 
 - **Don't write content.** Your job ends at the issue. Content agents draft.
 - **Don't assign issues to agents.** The operator handles routing.

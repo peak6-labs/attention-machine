@@ -13,7 +13,23 @@ Use this skill when your task involves creating X/Twitter content: drafting
 posts, composing threads, writing replies, or revising drafts based on
 feedback. This is the shared playbook for all content agents.
 
-## 1. Ground rules
+## 1. PEAK6 brand identity
+
+**PEAK6** is a multibillion-dollar fintech operating company founded in 1997 as
+options traders. We've been using technology to find edge for nearly 30 years.
+We are NOT tourists in AI or fintech — we are operators in both.
+
+**Positioning**: The intersection of AI and Fintech, from the perspective of
+people who build and operate both.
+
+**Key assets to reference**:
+- **Apex Fintech Solutions** — fintech infrastructure (clearing, custody, trading)
+- **PEAK6 Capital Management** — quantitative investing
+- **Trials** — founder residency program for fintech + AI startups
+- **Strategic Capital** — investing in AI companies
+- **AI Labs** — the team building this system and other AI-powered tools
+
+## 2. Ground rules
 
 - You **never publish directly**. Every draft goes through the Paperclip
   issue approval flow: create draft → submit as issue (`in_review`) → human
@@ -26,7 +42,7 @@ feedback. This is the shared playbook for all content agents.
 - Include `X-Paperclip-Run-Id` on all mutating API requests per the
   `paperclip` skill.
 
-## 2. Voice profiles
+## 3. Voice profiles
 
 PEAK6 operates two distinct voices on X. Every draft must use exactly one.
 
@@ -66,7 +82,7 @@ accounts about their work at PEAK6.
 > Saturdays. Turns out xAI's search index is thinner on weekends. Fix: widen
 > the date window to 3 days. Simple, but cost me 2 hours.
 
-## 3. Content buckets
+## 4. Content buckets
 
 Distribute content across these categories. The ratios are guidelines, not
 rigid rules — adjust based on what the Performance Analyst reports is
@@ -84,7 +100,7 @@ working.
 least 4 value posts (Insights, Build in Public, Commentary). Audiences
 tolerate promotion when it is surrounded by substance.
 
-## 4. Topic boundaries
+## 5. Topic boundaries
 
 ### Always on-topic
 
@@ -114,7 +130,7 @@ tolerate promotion when it is surrounded by substance.
 - AI safety/ethics — factual statements only, no hot takes
 - Macroeconomic predictions — frame as analysis, not advice
 
-## 5. Engagement rules
+## 6. Engagement rules
 
 When the issue specifies engagement (reply, quote-tweet) rather than
 standalone content:
@@ -146,7 +162,15 @@ standalone content:
   not "Great point! We also think...")
 - Never tag-dump or hijack threads for visibility
 
-## 6. Formatting rules
+### Reply velocity
+
+On X, the algorithm heavily rewards reply velocity and thread depth. A post
+that generates a 15-reply conversation gets dramatically more distribution
+than one that gets 15 likes. **When we post, the first 30 minutes of
+engagement matter most.** Spoke accounts should be ready to reply to hub
+posts and vice versa.
+
+## 7. Formatting rules
 
 ### Single tweets
 
@@ -172,7 +196,7 @@ standalone content:
 - Prefer charts and data visualizations over stock photos.
 - No memes from the hub account. Builder accounts can use them sparingly.
 
-## 7. Draft output format
+## 8. Draft output format
 
 When creating a draft, format it as a Paperclip issue comment:
 
@@ -202,7 +226,7 @@ the topic is time-sensitive}
 Keep the draft clean. The human reviewer should be able to approve with one
 click, not spend time reformatting.
 
-## 8. Revision workflow
+## 9. Revision workflow
 
 When a draft is sent back with revision requests (issue comment from the
 reviewer):
@@ -215,7 +239,7 @@ reviewer):
 5. Below the draft, add a `**Changes:**` section listing what changed and
    why.
 
-## 9. Compliance checklist
+## 10. Compliance checklist
 
 Before submitting any draft for review, verify:
 
@@ -226,3 +250,17 @@ Before submitting any draft for review, verify:
 - [ ] No disparaging references to competitors
 - [ ] Content bucket and voice profile are explicitly stated
 - [ ] Target account is specified
+
+## 11. Measurement (for Analytics Agent)
+
+Track these metrics to close the feedback loop:
+
+- **Impressions per post** by content bucket — are we over-indexing on one?
+- **Engagement rate** by voice (hub vs. spoke) — which accounts resonate?
+- **Reply depth** — are our posts generating conversations?
+- **Follower growth rate** — accumulating the right audience?
+- **Impression-to-follower conversion** — are impressions turning into follows?
+- **Top performing post weekly** — what topic/format/timing worked best?
+
+Report weekly. Adjust content bucket ratios based on what's working. The
+doctrine is a starting point, not a permanent constraint.
