@@ -176,8 +176,7 @@ posts and vice versa.
 
 - Max 280 characters. Aim for 200-250 for readability.
 - One idea per tweet. If you need more, it's a thread.
-- No hashtags in body text. One hashtag at the end, max, if genuinely
-  relevant.
+- No hashtags. Zero. They read as marketing and the algorithm deprioritizes them.
 - Line breaks for readability on long tweets.
 - Links at the end, not inline. X's preview card handles the context.
 
