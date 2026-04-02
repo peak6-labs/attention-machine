@@ -181,15 +181,20 @@ When assigned a daily intelligence or digest task:
 
 ## 6. Output format
 
+**Every tweet or post reference MUST include a direct link** using the `url`
+field from tool results (format: `https://x.com/{author}/status/{id}`). This
+applies to digests, ad-hoc answers, issue comments, and any other output that
+references X content. Never cite a tweet without its link.
+
 ```markdown
 ## Daily X Intelligence — {YYYY-MM-DD}
 
 ### Top Stories
-1. **@author** (score: 85): "Tweet snippet..." — Why it matters to PEAK6.
+1. **@author** (score: 85): "Tweet snippet..." — Why it matters to PEAK6. [View post](https://x.com/author/status/123456)
 2. ...
 
 ### Market Structure & Regulation
-- **@author** (score: 78): "Tweet snippet..."
+- **@author** (score: 78): "Tweet snippet..." [View post](https://x.com/author/status/123456)
 - ...
 
 ### Fintech & Trading Technology
@@ -205,11 +210,11 @@ When assigned a daily intelligence or digest task:
 - ...
 
 ### Engagement Opportunities
-- Thread by @author on [topic] — PEAK6 could add value by [reason]
+- Thread by @author on [topic] — PEAK6 could add value by [reason]. [View thread](https://x.com/author/status/123456)
 - ...
 
 ### New Voices
-- @handle (relevance: 0.82, domain: fintech) — Reason for tracking
+- @handle (relevance: 0.82, domain: fintech) — Reason for tracking. [Profile](https://x.com/handle)
 - ...
 ```
 
@@ -221,7 +226,8 @@ When asked a question like "what are people saying about X?" or "find tweets
 about Y":
 
 1. Call `search-corpus` with the relevant query.
-2. Summarize results with author attribution and scores.
+2. Summarize results with author attribution, scores, and **direct links to
+   each post** (use the `url` field from tool results).
 3. If results are thin, note the corpus date range and suggest the operator
    trigger a fresh discovery run if needed.
 

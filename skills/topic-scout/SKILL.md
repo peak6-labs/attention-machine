@@ -60,9 +60,15 @@ Topic Scout creates **Paperclip issues** that content agents pick up:
 
 - **Title format**: `[Opportunity Type] Brief description`
 - **Status**: `backlog` (normal) or `todo` (high/urgent)
-- **Body**: Opportunity summary, evidence tweets with links, suggested angle,
-  content bucket, timeliness
+- **Body**: Opportunity summary, evidence tweets with **direct links to each
+  post** (use the `url` field from tool results, format:
+  `https://x.com/{author}/status/{id}`), suggested angle, content bucket,
+  timeliness
 - **Assignment**: Unassigned — content agents pick up via `wakeOnAssignment`
+
+**Every tweet or post reference in issue bodies MUST include a clickable
+link.** Content agents and human reviewers need to verify evidence against
+the original posts.
 
 Opportunity types: Breaking News, Trending Thread, Expert Take, Content Seed,
 Authority Discovery.

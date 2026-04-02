@@ -75,6 +75,10 @@ Use x-intelligence tools to deepen understanding:
 - `analyze-topic` if the topic needs broader context
 - `get-thread` if the opportunity is about a specific conversation
 
+**Collect the `url` field** from all relevant tool results. You will need
+these links in the draft output to give reviewers direct access to source
+posts.
+
 ### Step 3: Draft
 
 Write a post following the content doctrine:

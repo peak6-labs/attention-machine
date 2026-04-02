@@ -217,10 +217,18 @@ the topic is time-sensitive}
 
 **Engagement type:** {standalone | reply to [tweet URL] | quote of [tweet URL]}
 
+**Source posts:**
+- [View post](https://x.com/{author}/status/{id}) — @{author}, score: {X}
+- {additional source posts if applicable}
+
 ---
 
-*Corpus reference: score {X}, pillar: {pillar}, via @{author}*
+*Corpus reference: score {X}, pillar: {pillar}, via @{author} — [View](https://x.com/{author}/status/{id})*
 ```
+
+**Always include direct links** to the source posts that informed the draft.
+Use the `url` field from plugin tool results. Reviewers need to verify the
+draft against the original conversation.
 
 Keep the draft clean. The human reviewer should be able to approve with one
 click, not spend time reformatting.

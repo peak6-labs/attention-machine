@@ -164,6 +164,9 @@ POST /api/companies/{companyId}/issues
 
 ### Issue description template
 
+**Every tweet reference MUST include a direct link** using the `url` field
+from tool results (format: `https://x.com/{author}/status/{id}`).
+
 ```markdown
 ## Content Opportunity
 
@@ -176,7 +179,8 @@ POST /api/companies/{companyId}/issues
 ### What's happening
 
 {2-3 sentences: what conversation or trend is occurring on X right now.
-Include specific @handles and paraphrase their positions.}
+Include specific @handles, paraphrase their positions, and link to the
+key posts driving the conversation.}
 
 ### Why PEAK6 should participate
 
@@ -185,11 +189,11 @@ to this conversation. Be specific — "we know about markets" is not enough.}
 
 ### Corpus evidence
 
-| Tweet | Author | Score | Age |
-|-------|--------|-------|-----|
-| "{snippet}" | @{handle} | {score} | {hours}h |
-| "{snippet}" | @{handle} | {score} | {hours}h |
-| ... | ... | ... | ... |
+| Tweet | Author | Score | Age | Link |
+|-------|--------|-------|-----|------|
+| "{snippet}" | @{handle} | {score} | {hours}h | [View](https://x.com/{handle}/status/{id}) |
+| "{snippet}" | @{handle} | {score} | {hours}h | [View](https://x.com/{handle}/status/{id}) |
+| ... | ... | ... | ... | ... |
 
 ### Suggested angle
 
@@ -239,14 +243,14 @@ When triggered by a `corpus.updated` event or a scheduled heartbeat:
 **Issues created:** {list issue IDs}
 
 ### Trends
-- {Trend 1}: {one-line description} — {N items, highest score: X}
+- {Trend 1}: {one-line description} — {N items, highest score: X} [Top post](https://x.com/{handle}/status/{id})
 - {Trend 2}: ...
 
 ### Skipped
 - {Topic}: {why it was not actionable}
 
 ### New voices tracked
-- @{handle} (relevance: {X}, domain: {domain})
+- @{handle} (relevance: {X}, domain: {domain}) — [Profile](https://x.com/{handle})
 ```
 
 ## 8. Ad-hoc analysis
