@@ -76,6 +76,8 @@ Reply guidelines:
 - **Never tag-dump or hijack** threads for visibility
 - **Get conversation context first** — use `get-thread` before replying to
   understand the full discussion, not just the tweet you're replying to
+- **Always reference the target** — include a direct link to the tweet
+  you're engaging with: `[View post](https://x.com/author/status/ID)`
 
 ### Quote-tweet
 

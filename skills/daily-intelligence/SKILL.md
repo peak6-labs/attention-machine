@@ -86,6 +86,11 @@ For each suggestion:
 - If 5+ appearances and 0.7+ avg relevance → call `promote-handle`
 - If promising but not yet at threshold → note for future cycles
 
+Also scan for untracked handles producing quality content in the corpus.
+Call `track-handle` for any new voice worth monitoring. Note: manually
+tracked handles start at `appearances: 0` and won't auto-promote until
+the pipeline encounters their tweets.
+
 ### 6. Rate tweets
 
 Call `rate-tweet` on 10+ tweets from the corpus:

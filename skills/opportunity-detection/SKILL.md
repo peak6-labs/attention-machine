@@ -88,6 +88,9 @@ Score each opportunity on three dimensions:
 
 As you review content, manage the handle pipeline:
 
+- **Verify authority status**: Call `get-authorities` to check which handles
+  are recognized domain experts. Authority participation significantly
+  raises opportunity signal strength.
 - **Check suggestions**: Call `suggest-handles` — handles with 5+ appearances
   and 0.7+ avg relevance are promotion candidates
 - **Promote strong handles**: Call `promote-handle` with domain and

@@ -136,10 +136,11 @@ Don't dump raw data. Synthesize and present:
 **Bad**: "Here are 15 tweets about AI in finance with scores ranging from
 62 to 89."
 
-**Good**: "Three conversations stand out this morning: a thread on
-LLM-powered compliance tools (started by @authority, 80+ engagements), a
-debate about AI trading regulations, and a new Trials company getting
-attention for their RAG platform."
+**Good**: "Three conversations stand out this morning: a
+[thread on LLM-powered compliance tools](https://x.com/authority/status/123)
+(started by @authority, 80+ engagements), a debate about
+[AI trading regulations](https://x.com/analyst/status/456), and a new Trials
+company getting [attention for their RAG platform](https://x.com/founder/status/789)."
 
 ### Include links
 
