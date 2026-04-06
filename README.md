@@ -22,9 +22,14 @@ Skills are markdown files that teach agents how to perform specific procedures. 
 
 | Skill | Purpose | Used by |
 |-------|---------|---------|
-| [x-discovery-engine](skills/x-discovery-engine/SKILL.md) | Curate daily X intelligence using plugin tools | Clawdius (X Discovery) |
-| [x-content-doctrine](skills/x-content-doctrine/SKILL.md) | Brand voice, content buckets, topic boundaries, compliance | Content agents (Brand Voice Writer, Builder Voice Writer, etc.) |
-| [x-analysis-framework](skills/x-analysis-framework/SKILL.md) | Evaluate corpus for content opportunities, create issues | Topic Scout, sensing agents |
+| [x-research](skills/x-research/SKILL.md) | Research methodology for any X topic — query decomposition, signal assessment, synthesis | All agents |
+| [x-content-doctrine](skills/x-content-doctrine/SKILL.md) | Brand voice, content buckets, topic boundaries, compliance | Content + personal agents |
+| [x-engagement](skills/x-engagement/SKILL.md) | Engagement tactics — replies, quotes, threading, timing | Content + personal agents |
+| [opportunity-detection](skills/opportunity-detection/SKILL.md) | Identify content opportunities, cluster detection, scoring | Operational agents |
+| [daily-intelligence](skills/daily-intelligence/SKILL.md) | Orchestrate daily corpus digest after pipeline run | Clawden (Topic Scout) |
+| [agent-delegation](skills/agent-delegation/SKILL.md) | Create issues to delegate work to other agents | Operational + personal agents |
+| [user-interaction](skills/user-interaction/SKILL.md) | Human interaction, preference management, conversational presentation | Personal agents |
+| [alert-management](skills/alert-management/SKILL.md) | Handle plugin alerts, severity assessment, routing | Personal agents |
 
 ### Adding a new skill
 

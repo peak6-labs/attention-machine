@@ -105,7 +105,7 @@ Personal agents run as **persistent OpenClaw sessions** that stay alive. They by
 - xAI API with x_search capability
 - Paperclip API (store results as issue comments or repo files)
 
-**Skill:** `x-discovery-engine` — search queries to run, accounts to monitor, how to combine X API structured results with xAI semantic results, output format, storage location
+**Skills:** `x-research` (query methodology), `daily-intelligence` (corpus workflow), `opportunity-detection` (content opportunity scoring)
 
 **Routine:** Daily 6am cron
 
@@ -742,7 +742,9 @@ Personal:    personal-x-post-redirect, state-save, memory-consolidation,
 |---|---|---|
 | `agentmail` (ClawHub) | Clawson, Clawthorne, Clawrence | Installed via `npx clawhub@latest install agentmail` |
 | `google-apis` | Clawson, Clawrence | Read Drive files, write Docs via service account |
-| `x-discovery-engine` | Clawdius | X API + xAI search queries, firm-wide curation, output format |
+| `x-research` | All agents | Research methodology for any X topic |
+| `daily-intelligence` | Clawden | Orchestrate daily corpus digest |
+| `opportunity-detection` | Clawdius, Clawden | Content opportunity identification and scoring |
 | `pr-followup` | Clawthorne | Parse PR emails, identify follow-ups, reminder format |
 | `copy-generation` | Clawson | Tone per audience, format per channel, compliance rules, draft-before-send |
 | `linkedin-pipeline` | Clawrence | Read Drive content, caption format, compliance doc structure |
@@ -791,7 +793,7 @@ npx clawhub@latest install <skill-slug>
 |---|---|---|
 | `readx` | `clawhub install wxtsky-readx` | Most feature-rich X intelligence toolkit: user analysis, trend tracking, community mapping |
 | `bird` | `clawhub install steipete-bird` | X CLI for reading, searching, posting (by @steipete) |
-| `kiro-x-publisher` | `clawhub install vmining-kiro-x-publisher` | Discover topics on X, enrich tweets, generate drafts — supplements `x-discovery-engine` |
+| `kiro-x-publisher` | `clawhub install vmining-kiro-x-publisher` | Discover topics on X, enrich tweets, generate drafts — supplements `x-research` |
 | `social-intelligence` | `clawhub install atyachin-social-intelligence` | Cross-platform research: Twitter + Instagram + Reddit |
 
 #### Clawson (Content Lead)
@@ -1068,20 +1070,25 @@ Private GitHub repo — an ops repo, not a code repo.
 ```
 peak6-attention/
   skills/
-    # Operational
+    # Capability skills (any agent)
+    x-research/SKILL.md
+    x-content-doctrine/SKILL.md
+    x-engagement/SKILL.md
+    opportunity-detection/SKILL.md
+    agent-delegation/SKILL.md
+
+    # Operational (corpus workflow)
+    daily-intelligence/SKILL.md
+
+    # Personal agent
+    user-interaction/SKILL.md
+    alert-management/SKILL.md
+
+    # Other operational
     google-apis/SKILL.md
-    x-discovery-engine/SKILL.md
-    x-content-pipeline/SKILL.md
-    linkedin-pipeline/SKILL.md
     copy-generation/SKILL.md
     compliance-daily-digest/SKILL.md
     pr-followup/SKILL.md
-    trend-research/SKILL.md
-
-    # Personal agent
-    personal-assistant/SKILL.md
-    personal-memory/SKILL.md
-    x-engagement/SKILL.md
 
     # NOTE: agentmail skill is installed via ClawHub, not in this repo
     # NOTE: community skills installed via ClawHub go to ~/.openclaw/skills/
